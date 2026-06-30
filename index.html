@@ -1419,6 +1419,24 @@
   .login-btn:hover { background: #3d68f0; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(79,122,255,0.36); }
   .login-btn:active { transform: translateY(0); }
 
+  .viewer-mode-btn {
+    width: 100%; padding: 12px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+    color: var(--text-secondary);
+    font-family: 'Pretendard', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .viewer-mode-btn:hover {
+    background: var(--surface);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .viewer-mode-btn:active { transform: scale(0.98); }
+
   /* 관리자 뱃지 */
   .admin-badge {
     display: inline-flex; align-items: center; gap: 5px;
@@ -2857,9 +2875,8 @@
     <div class="login-error" id="loginError">아이디 또는 비밀번호가 올바르지 않습니다.</div>
     <button class="login-btn" onclick="tryLogin()">로그인</button>
 
-    <div style="text-align:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--border)">
-      <button style="background:none;border:none;font-size:12px;color:var(--text-secondary);cursor:pointer;font-family:'Pretendard',sans-serif;"
-        onclick="enterViewerMode()">
+    <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border)">
+      <button class="viewer-mode-btn" onclick="enterViewerMode()">
         👁 로그인 없이 열람만 하기
       </button>
     </div>

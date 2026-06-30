@@ -1422,15 +1422,28 @@
   /* 관리자 뱃지 */
   .admin-badge {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-    padding: 3px 9px; border-radius: 99px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+    padding: 4px 11px; border-radius: 99px;
     background: var(--accent-light); color: var(--accent);
     border: 1px solid rgba(79,122,255,0.25);
-    font-family: 'Fira Code', monospace;
+    font-family: 'Pretendard', sans-serif;
     cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
   }
   .admin-badge::before { content: '🔓'; font-size: 10px; }
-  .admin-badge:hover { background: #dde6ff; }
+  .admin-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .login-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+    padding: 4px 11px; border-radius: 99px;
+    background: var(--surface2); color: var(--text-secondary);
+    border: 1px solid var(--border);
+    font-family: 'Pretendard', sans-serif;
+    cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .login-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   /* 뷰어 모드에서 편집 버튼 숨김 */
   body.viewer-mode .btn-edit,
@@ -2274,7 +2287,8 @@
     </div>
     <div class="header-right">
       <div class="year-badge">FY 2026</div>
-      <div class="admin-badge" id="adminBadge" onclick="logout()" title="클릭하면 로그아웃">관리자</div>
+      <div class="admin-badge" id="adminBadge" onclick="logout()" title="클릭하면 로그아웃">관리자 · 로그아웃</div>
+      <div class="login-badge" id="loginBadge" onclick="showLoginScreen()" title="관리자 로그인" style="display:none">🔒 관리자 로그인</div>
       <button class="export-btn" onclick="openExportModal()">
         <svg viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 11v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         엑셀 다운로드
@@ -3233,6 +3247,7 @@ function tryLogin() {
     setTimeout(() => { overlay.style.display = 'none'; }, 350);
     document.body.classList.remove('viewer-mode');
     document.getElementById('adminBadge').style.display = '';
+    document.getElementById('loginBadge').style.display = 'none';
     errEl.style.display = 'none';
     // 로그인 완료 후 데이터 불러오기
     setTimeout(() => loadFromDrive(), 400);
@@ -3255,8 +3270,20 @@ function enterViewerMode() {
   setTimeout(() => { overlay.style.display = 'none'; }, 350);
   document.body.classList.add('viewer-mode');
   document.getElementById('adminBadge').style.display = 'none';
+  document.getElementById('loginBadge').style.display = '';
   // 열람 모드 진입 후 데이터 불러오기
   setTimeout(() => loadFromDrive(), 400);
+}
+
+function showLoginScreen() {
+  const overlay = document.getElementById('loginOverlay');
+  overlay.style.cssText = '';
+  overlay.style.display = 'flex';
+  overlay.classList.remove('hidden');
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginPw').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  setTimeout(() => document.getElementById('loginId').focus(), 150);
 }
 
 function logout() {
@@ -3265,6 +3292,7 @@ function logout() {
   sessionStorage.removeItem('sh_admin');
   document.body.classList.add('viewer-mode');
   document.getElementById('adminBadge').style.display = 'none';
+  document.getElementById('loginBadge').style.display = 'none';
   // 로그인 오버레이 다시 표시
   const overlay = document.getElementById('loginOverlay');
   overlay.style.display = 'flex';
